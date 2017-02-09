@@ -55,7 +55,7 @@
         <link rel="stylesheet" href="/css/ie-blocker.css">
 
         
-            <script src="/js/ie-blocker.en.js"></script>
+            <script src="/js/ie-blocker.zhCN.js"></script>
         
     <![endif]-->
 
@@ -226,7 +226,7 @@
     </button>
 
     <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn">
-        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#微信支付开发"><span class="post-toc-number">1.</span> <span class="post-toc-text">微信支付开发</span></a></li></ol>
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#模式一"><span class="post-toc-number">1.</span> <span class="post-toc-text">模式一</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1）、生成支付链接或是二维码"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">1）、生成支付链接或是二维码</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#模式二"><span class="post-toc-number">2.</span> <span class="post-toc-text">模式二</span></a></li></ol>
 
         <!--
         <li class="mdl-menu__item">
@@ -281,7 +281,7 @@
     <!-- Author Name & Date -->
     <div>
         <strong>shengyu-kmust</strong>
-        <span>Feb 09, 2017</span>
+        <span>2月 09, 2017</span>
     </div>
 
     <div class="section-spacer"></div>
@@ -323,7 +323,7 @@
     
         <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=微信支付接口开发之--微信扫码支付&url=http://shengyu-kmust.github.io//2017/02/10/微信支付接口开发之--微信扫码支付/index.html&pic=&searchPic=false&style=simple" target="_blank">
             <li class="mdl-menu__item">
-                شارك على Weibo
+                分享到微博
             </li>
         </a>
     
@@ -332,7 +332,7 @@
     
         <a class="post_share-link" href="https://twitter.com/intent/tweet?text=微信支付接口开发之--微信扫码支付&url=http://shengyu-kmust.github.io//2017/02/10/微信支付接口开发之--微信扫码支付/index.html&via=shengyu-kmust" target="_blank">
             <li class="mdl-menu__item">
-                شارك على Twitter
+                分享到 Twitter
             </li>
         </a>
     
@@ -341,7 +341,7 @@
     
         <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://shengyu-kmust.github.io//2017/02/10/微信支付接口开发之--微信扫码支付/index.html" target="_blank">
             <li class="mdl-menu__item">
-                شارك على Facebook
+                分享到 Facebook
             </li>
         </a>
     
@@ -350,7 +350,7 @@
     
         <a class="post_share-link" href="https://plus.google.com/share?url=http://shengyu-kmust.github.io//2017/02/10/微信支付接口开发之--微信扫码支付/index.html" target="_blank">
             <li class="mdl-menu__item">
-                شارك على Google+
+                分享到 Google+
             </li>
         </a>
     
@@ -372,7 +372,25 @@
                 <!-- Post Content -->
                 <div id="post-content" class="markdown-Github mdl-color-text--grey-700 mdl-card__supporting-text fade out">
     
-        <h1 id="微信支付开发"><a href="#微信支付开发" class="headerlink" title="微信支付开发"></a>微信支付开发</h1>
+        <p>微信扫码开发有两种模式</p>
+<h1 id="模式一"><a href="#模式一" class="headerlink" title="模式一"></a>模式一</h1><p>实现步骤</p>
+<h2 id="1）、生成支付链接或是二维码"><a href="#1）、生成支付链接或是二维码" class="headerlink" title="1）、生成支付链接或是二维码"></a>1）、生成支付链接或是二维码</h2><p>链接格式如下：<br>weixin://wxpay/bizpayurl?appid=wxa842e8005c427e2d&amp;mch_id=1314710101&amp;nonce_str=3c6d11d09c2f4d49a7c18386cf8f3a14&amp;product_id=123456789&amp;sign=4AC5113048BD4A08E16DD8DC8D69A744&amp;time_stamp=1456365970<br>这一步可能出现的错误：<br>扫码后微信提示：原生支付URL参数错误<br>原因：商户密钥key如果错了也会出现这个提示，URL的参数少传或是格式错了，或是签名错了都会出现这个错误<br>2）、用户扫描或是点进去1）中生成的链接，微信支付系统会在后台调用在“微信公众号”配置里设好的“扫码支付支付回调URL”，并向回调URL地要传递<br>openid和product_id进行统一下单<br>        回调URL的作用：接收微信支付后台发送的扫码结果，调用统一下单接口并将下单结果返回给微信支付后台<br>回调URL设置如下图</p>
+<p>在回调URL里的统一下单代码如下：</p>
+<p>在回调URL里，返回给调用它的微信支付系统后台的参数如下：</p>
+<pre><code>在WxPayApi官方示例这一步会出的错误
+错误一：
+</code></pre><p>原因：在商户的回调URL的处理里出错，或是超时，如在官网提供的示例里就出了这个错，检查原因如下（坑太多了呢。。。。）：<br>在WxPayApi的Data.cs里public SortedDictionary<string, object=""> FromXml(string xml)方法出错，改成下面自己写的</string,></p>
+<p>3、如果2）成功后会自动跳到微信支付的统一界面</p>
+<h1 id="模式二"><a href="#模式二" class="headerlink" title="模式二"></a>模式二</h1><p>描述：<br>    模式二与模式一相比，流程更为简单，不依赖设置的回调支付URL，也没有“支付授权目录”的限制。商户后台系统先调用微信支付的统一下单接口，微信后台系统返回链接参数code_url，商户后台系统将code_url值生成二维码图片，用户使用微信客户端扫码后发起支付。注意：code_url有效期为2小时，过期后扫码不能再发起支付。<br>业务流程时序图</p>
+<p>业务流程说明：</p>
+<p>二维码规则</p>
+<p>实现步骤<br>步骤一：调用统一下单接口<br>步骤二：统一下单接口会返回code_url参数，将它生成二维码就可以了<br>代码如下：</p>
+<p>即：向<a href="https://api.mch.weixin.qq.com/pay/unifiedorder接口post下面格式的数据就行：" target="_blank" rel="external">https://api.mch.weixin.qq.com/pay/unifiedorder接口post下面格式的数据就行：</a></p>
+<xml><appid>&lt;![CDATA[wxa842e8005c427e2d]]&gt;</appid><attach>&lt;![CDATA[这是易度附加数据]]&gt;</attach><body>&lt;![CDATA[这是易度商品描述]]&gt;</body><goods_tag>&lt;![CDATA[jjj]]&gt;</goods_tag><mch_id>&lt;![CDATA[1314710101]]&gt;</mch_id><nonce_str>&lt;![CDATA[b4f9d98a8d194f729220173bc31fd3d5]]&gt;</nonce_str><notify_url><a href="![CDATA[http://paysdk.weixin.qq.com/example/ResultNotifyPage.aspx]]">![CDATA[http://paysdk.weixin.qq.com/example/ResultNotifyPage.aspx]]</a></notify_url><out_trade_no>&lt;![CDATA[131471010120160229144430504]]&gt;</out_trade_no><product_id>&lt;![CDATA[123456789]]&gt;</product_id><sign>&lt;![CDATA[0430049F917C36BA1A2EC4778AE71AC6]]&gt;</sign><spbill_create_ip>&lt;![CDATA[8.8.8.8]]&gt;</spbill_create_ip><time_expire>&lt;![CDATA[20160229145430]]&gt;</time_expire><time_start>&lt;![CDATA[20160229144430]]&gt;</time_start><total_fee>1</total_fee><trade_type>&lt;![CDATA[NATIVE]]&gt;</trade_type></xml>
+
+
+
+
     
 
     
@@ -400,8 +418,8 @@
 
     <!-- Next Nav -->
     
-        <a href="/2017/02/09/my-first-blog/" id="post_nav-older" class="next-content">
-            أقدم
+        <a href="/2017/02/09/markdown语法/" id="post_nav-older" class="next-content">
+            旧篇
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
                 <i class="material-icons">arrow_forward</i>
@@ -469,7 +487,7 @@
     <li id="sidebar-first-li">
         <a href="/" target="_self">
             <i class="material-icons sidebar-material-icons">home</i>
-            الرئيسية
+            主页
         </a>
     </li>
 
@@ -487,12 +505,12 @@
     <li class="dropdown">
         <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
             <i class="material-icons sidebar-material-icons">inbox</i>
-             أرشيف
+             归档
             <b class="caret"></b>
         </a>
         <ul class="dropdown-menu">
             <li>
-            <a class="sidebar_archives-link" href="/archives/2017/02/">February 2017<span class="sidebar_archives-count">3</span></a>
+            <a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">4</span></a>
         </ul>
     </li>
 
@@ -509,8 +527,8 @@
     <!-- Article Numebr  -->
     <li>
         <a href="/archives">
-            رقم المقالة
-            <span class="sidebar-badge">3</span>
+            文章总数
+            <span class="sidebar-badge">4</span>
         </a>
     </li>
 </ul>
@@ -533,7 +551,7 @@ It will not impact the appearance and can give developers a lot of support :)
 <!-- Theme Material -->
 <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
     <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
-        سمة - Material
+        主题 - Material
         <span class="sidebar-badge badge-circle">i</span>
     </div>
 </a>
