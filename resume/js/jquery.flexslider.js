@@ -166,14 +166,60 @@
                 var $slide = $(this),
                     target = $slide.index();
                 var posFromLeft = $slide.offset().left - $(slider).scrollLeft(); // Find position of slide relative to left of slider container
-                if( posFromLeft <= 0="" &&="" $slide.hasclass(="" namespace="" +="" 'active-slide'="" )="" {="" slider.flexanimate(slider.gettarget("prev"),="" true);="" }="" else="" if="" (!$(slider.vars.asnavfor).data('flexslider').animating="" !$slide.hasclass(namespace="" "active-slide"))="" slider.direction="(slider.currentItem" <="" target)="" ?="" "next"="" :="" "prev";="" slider.flexanimate(target,="" slider.vars.pauseonaction,="" false,="" true,="" });="" }else{="" el._slider="slider;" slider.slides.each(function="" (){="" var="" that="this;" that._gesture="new" msgesture();="" that._gesture.target="that;" that.addeventlistener("mspointerdown",="" function="" (e){="" e.preventdefault();="" if(e.currenttarget._gesture)="" e.currenttarget._gesture.addpointer(e.pointerid);="" },="" false);="" that.addeventlistener("msgesturetap",="" $slide="$(this)," target="$slide.index();" !$slide.hasclass('active'))="" controlnav:="" setup:="" function()="" (!slider.manualcontrols)="" methods.controlnav.setuppaging();="" manualcontrols:="" methods.controlnav.setupmanual();="" setuppaging:="" type="(slider.vars.controlNav" =="=" "thumbnails")="" 'control-thumbs'="" 'control-paging',="" j="1," item,="" slide;="" slider.controlnavscaffold="$('<ol" class="'+ namespace + 'control-nav ' + namespace + type + '">');
+                if( posFromLeft <= 0 && $slide.hasClass( namespace + 'active-slide' ) ) {
+                  slider.flexAnimate(slider.getTarget("prev"), true);
+                } else if (!$(slider.vars.asNavFor).data('flexslider').animating && !$slide.hasClass(namespace + "active-slide")) {
+                  slider.direction = (slider.currentItem < target) ? "next" : "prev";
+                  slider.flexAnimate(target, slider.vars.pauseOnAction, false, true, true);
+                }
+              });
+          }else{
+              el._slider = slider;
+              slider.slides.each(function (){
+                  var that = this;
+                  that._gesture = new MSGesture();
+                  that._gesture.target = that;
+                  that.addEventListener("MSPointerDown", function (e){
+                      e.preventDefault();
+                      if(e.currentTarget._gesture) {
+                        e.currentTarget._gesture.addPointer(e.pointerId);
+                      }
+                  }, false);
+                  that.addEventListener("MSGestureTap", function (e){
+                      e.preventDefault();
+                      var $slide = $(this),
+                          target = $slide.index();
+                      if (!$(slider.vars.asNavFor).data('flexslider').animating && !$slide.hasClass('active')) {
+                          slider.direction = (slider.currentItem < target) ? "next" : "prev";
+                          slider.flexAnimate(target, slider.vars.pauseOnAction, false, true, true);
+                      }
+                  });
+              });
+          }
+        }
+      },
+      controlNav: {
+        setup: function() {
+          if (!slider.manualControls) {
+            methods.controlNav.setupPaging();
+          } else { // MANUALCONTROLS:
+            methods.controlNav.setupManual();
+          }
+        },
+        setupPaging: function() {
+          var type = (slider.vars.controlNav === "thumbnails") ? 'control-thumbs' : 'control-paging',
+              j = 1,
+              item,
+              slide;
+
+          slider.controlNavScaffold = $('<ol class="'+ namespace + 'control-nav ' + namespace + type + '"></ol>');
 
           if (slider.pagingCount > 1) {
             for (var i = 0; i < slider.pagingCount; i++) {
               slide = slider.slides.eq(i);
               if ( undefined === slide.attr( 'data-thumb-alt' ) ) { slide.attr( 'data-thumb-alt', '' ); }
               var altText = ( '' !== slide.attr( 'data-thumb-alt' ) ) ? altText = ' alt="' + slide.attr( 'data-thumb-alt' ) + '"' : '';
-              item = (slider.vars.controlNav === "thumbnails") ? '<img src="' + slide.attr( 'data-thumb' ) + '" '="" +="" alttext="">' : '<a href="#">' + j + '</a>';
+              item = (slider.vars.controlNav === "thumbnails") ? '<img src="' + slide.attr( 'data-thumb' ) + '"' + altText + '/>' : '<a href="#">' + j + '</a>';
               if ( 'thumbnails' === slider.vars.controlNav && true === slider.vars.thumbCaptions ) {
                 var captn = slide.attr( 'data-thumbcaption' );
                 if ( '' !== captn && undefined !== captn ) { item += '<span class="' + namespace + 'caption">' + captn + '</span>'; }
@@ -964,7 +1010,15 @@
       if (!carousel) {
         if (pos < slider.currentSlide) {
           slider.currentSlide += 1;
-        } else if (pos <= slider.currentslide="" &&="" pos="" !="=" 0)="" {="" -="1;" }="" slider.animatingto="slider.currentSlide;" update="" controlnav="" if="" (slider.vars.controlnav="" !slider.manualcontrols)="" ((action="==" "add"="" !carousel)="" ||="" slider.pagingcount=""> slider.controlNav.length) {
+        } else if (pos <= slider.currentSlide && pos !== 0) {
+          slider.currentSlide -= 1;
+        }
+        slider.animatingTo = slider.currentSlide;
+      }
+
+      // update controlNav
+      if (slider.vars.controlNav && !slider.manualControls) {
+        if ((action === "add" && !carousel) || slider.pagingCount > slider.controlNav.length) {
           methods.controlNav.update("add");
         } else if ((action === "remove" && !carousel) || slider.pagingCount < slider.controlNav.length) {
           if (carousel && slider.currentSlide > slider.last) {
@@ -1139,4 +1193,3 @@
     }
   };
 })(jQuery);
-</=></=>

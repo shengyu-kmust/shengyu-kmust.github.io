@@ -41,32 +41,32 @@
     var $obj = null;
 
     // append target markup
-    var $cmOverlayMask = $('<div>',{
+    var $cmOverlayMask = $('<div/>',{
             id:'cm-overlay-mask'
         }),
-        $cmWrap = $('<div>',{
+        $cmWrap = $('<div/>',{
             id:'cm-wrap'
         }),
-        $cmOverlay = $('<div>',{
+        $cmOverlay = $('<div/>',{
             id:'cm-overlay'
         }),
-        $cmContent = $('<div>',{
+        $cmContent = $('<div/>',{
             'class':'cm-content'
         }),
-        $cmScale = $('<i>',{
+        $cmScale = $('<i/>',{
             'class':'cm-scale'
         }),
-        $cmPrev = $('<a>',{
+        $cmPrev = $('<a/>',{
             href:'javascript:;',
             title:'Previous',
             id:'cm-prev'
         }).text('prev'),
-        $cmNext = $('<a>',{
+        $cmNext = $('<a/>',{
             href:'javascript:;',
             title:'Next',
             id:'cm-next'
         }).text('next'),
-        $cmClose = $('<a>',{
+        $cmClose = $('<a/>',{
             href:'javascript:;',
             title:'Press ESC to close',
             id:'cm-close'
@@ -153,7 +153,7 @@
     // target = iframe
         if ( $target.is('[rel]')) {
     //        windowSize();
-            $cmContent.prepend('<iframe width="640" height="360" frameborder="0" allowfullscreen src="'+url+'?autoplay=1;wmode=opaque;showinfo=0;rel=0;"></iframe>');
+            $cmContent.prepend('<iframe width="640" height="360" frameborder="0" allowfullscreen="" src="'+url+'?autoplay=1;wmode=opaque;showinfo=0;rel=0;"></iframe>');
             var $iframe = $cmOverlay.find('iframe'),
             iframeWidth = $iframe.attr('width');
     // define scaleIframe() function. relative to width to cater for landscape orientation
@@ -190,7 +190,7 @@
                 $cmWrap.removeClass('cm-loaded');
             }
 
-            var $img = $('<img>',{
+            var $img = $('<img/>',{
                 src:url,
                 alt:alt
             });
@@ -341,4 +341,3 @@
     }
 
 }( jQuery ));
-</a></a></a></i></div></div></div></div>
